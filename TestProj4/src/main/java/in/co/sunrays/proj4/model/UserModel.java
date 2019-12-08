@@ -7,6 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import in.co.sunrays.proj4.bean.UserBean;
+import in.co.sunrays.proj4.exception.ApplicationException;
+import in.co.sunrays.proj4.exception.DatabaseException;
+import in.co.sunrays.proj4.exception.DuplicateRecordException;
 import in.co.sunrays.proj4.util.JDBCDataSource;
 
 public class UserModel {
@@ -62,7 +65,7 @@ public class UserModel {
 	 * }
 	 * 
 	 */
-	public long add(UserBean bean) throws Exception {
+	public long add(UserBean bean) throws ApplicationException,DuplicateRecordException {
 		// log.debug("Model add Started");
 		Connection conn = null;
 		int pk = 0;
@@ -70,8 +73,8 @@ public class UserModel {
 		UserBean existbean = findByLogin(bean.getLogin());
 
 		if (existbean != null) {
-			// throw new DuplicateRecordException("Login Id already exists");
-			System.out.println("LOGIN ALREADY EXISTS");
+			 throw new DuplicateRecordException("Login Id already exists");
+			//System.out.println("LOGIN ALREADY EXISTS");
 		}
 
 		try {
@@ -109,23 +112,24 @@ public class UserModel {
 			conn.commit(); // End transaction
 			pstmt.close();
 		} catch (Exception e) {
-			// log.error("Database Exception..", e);
-			try {
-				conn.rollback();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-				// throw new ApplicationException(
-				// "Exception : add rollback exception " + ex.getMessage());
-			}
-			e.printStackTrace(); // throw new ApplicationException("Exception : Exception in add User");
-		} finally {
-			JDBCDataSource.closeConnection(conn);
-		}
-		// log.debug("Model add End");
-		return pk;
-	}
+           
+            try {
+                conn.rollback();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new ApplicationException(
+                        "Exception : add rollback exception " + ex.getMessage());
+            }
+            throw new ApplicationException("Exception : Exception in add User");
+        } finally {
+            JDBCDataSource.closeConnection(conn);
+        }
+ 
+        return pk;
+    }
 
-	public Integer nextPk() {
+    
+	public Integer nextPk() throws DatabaseException{
 		Connection conn = null;
 		int pk = 0;
 		try {
@@ -140,10 +144,10 @@ public class UserModel {
 			rs.close();
 			System.out.println("pk sql:-" + sql);
 			System.out.println("pk= " + pk);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
+		}catch (Exception e) {
+           
+            throw new DatabaseException("Exception : Exception in getting PK");
+        } finally {
 			JDBCDataSource.closeConnection(conn);
 
 			System.out.println();
@@ -153,7 +157,7 @@ public class UserModel {
 		return pk + 1;
 	}
 
-	public UserBean findByLogin(String login) {
+	public UserBean findByLogin(String login) throws ApplicationException {
 
 		UserBean bean = null;
 		Connection conn = null;
@@ -191,18 +195,19 @@ public class UserModel {
 			}
 			rs.close();
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-		} finally {
-			JDBCDataSource.closeConnection(conn);
+		}catch (Exception e) {
+            e.printStackTrace();
+           
+            throw new ApplicationException(
+                    "Exception : Exception in getting User by login");
+        } finally {
+            JDBCDataSource.closeConnection(conn);
 
 		}
 		return bean;
 	}
 
-	public UserBean findByPk(long pk) {
+	public UserBean findByPk(long pk) throws ApplicationException {
 
 		Connection conn = null;
 		UserBean bean = null;
@@ -211,8 +216,9 @@ public class UserModel {
 			conn = JDBCDataSource.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setLong(1, pk);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+			
 				bean = new UserBean();
 				bean.setId(rs.getLong(1));
 				bean.setFirstName(rs.getString(2));
@@ -233,19 +239,22 @@ public class UserModel {
 				bean.setCreatedDatetime(rs.getTimestamp(17));
 				bean.setModifiedDatetime(rs.getTimestamp(18));
 			}
+			
+		
 			rs.close();
 
 		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			JDBCDataSource.closeConnection(conn);
-
-		}
-
-		return bean;
+            e.printStackTrace();
+            throw new ApplicationException(
+                    "Exception : Exception in getting User by pk");
+        } finally {
+            JDBCDataSource.closeConnection(conn);
+        }
+        return bean;
+    
 	}
 
-	public void delete(UserBean bean) {
+	public void delete(UserBean bean) throws ApplicationException {
 		Connection conn = null;
 		StringBuffer sql = new StringBuffer("delete from st_user where id=?");
 		try {
@@ -258,17 +267,20 @@ public class UserModel {
 			conn.commit();
 			psmt.close();
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			try {
-				conn.rollback();
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		} finally {
-			JDBCDataSource.closeConnection(conn);
-
-		}
-	}
+	    	}  catch (Exception e) {
+           
+              try {
+                conn.rollback();
+            } catch (Exception ex) {
+                throw new ApplicationException(
+                        "Exception : Delete rollback exception "
+                                + ex.getMessage());
+            }
+            throw new ApplicationException(
+                    "Exception : Exception in delete User");
+        } finally {
+            JDBCDataSource.closeConnection(conn);
+        }
+       
+}
 }

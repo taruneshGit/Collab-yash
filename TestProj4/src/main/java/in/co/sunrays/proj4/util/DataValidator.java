@@ -75,4 +75,27 @@ public class DataValidator {
 		System.out.println("Is long " + isLong("123"));
 
 	}
+
+	/**
+	 * Checks if value is valid Email ID
+	 *
+	 * @param val
+	 * @return
+	 */
+	public static boolean isEmail(String val) {
+
+		String emailreg = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
+		if (isNotNull(val)) {
+			try {
+				return val.matches(emailreg);
+			} catch (NumberFormatException e) {
+				return false;
+			}
+
+		} else {
+			return false;
+		}
+	}
+
 }

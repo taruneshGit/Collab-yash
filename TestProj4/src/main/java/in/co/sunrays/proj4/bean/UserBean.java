@@ -18,7 +18,6 @@ public class UserBean extends BaseBean {
 	private int unSuccessfulLogin;
 	private String gender;
 	private Timestamp lastLogin;
-
 	private String lock = INACTIVE;
 	private String registeredIP;
 	private String lastLoginIP;
