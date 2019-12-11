@@ -4,18 +4,4 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-  <servlet>
-  	<servlet-name>ServletUtility</servlet-name>
-  	<display-name>ServletUtility</display-name>
-  	<description></description>
-  	<servlet-class>in.co.sunrays.proj4.util.ServletUtility</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>ServletUtility</servlet-name>
-  	<url-pattern>/ServletUtility</url-pattern>
-  </servlet-mapping>
-  
-  
-  
-  
 </web-app>
