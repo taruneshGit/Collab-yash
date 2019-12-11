@@ -6,21 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-<<<<<<< HEAD
-import java.text.ParseException;
-=======
->>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-<<<<<<< HEAD
-=======
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
->>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 import in.co.sunrays.proj4.bean.RoleBean;
 import in.co.sunrays.proj4.exception.ApplicationException;
 import in.co.sunrays.proj4.exception.DuplicateRecordException;
@@ -104,16 +97,10 @@ public class RoleModelTest {
 
 			}
 		} catch (ApplicationException e) {
-<<<<<<< HEAD
-
-			throw new ApplicationException("Exception : Exception in search Role");
-		}
-=======
          
             throw new ApplicationException(
                     "Exception : Exception in search Role");
         }
->>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 
 	}
 
@@ -143,31 +130,17 @@ public class RoleModelTest {
 			}
 
 		} catch (ApplicationException e) {
-<<<<<<< HEAD
-			e.printStackTrace();
-=======
             e.printStackTrace();
         }
->>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 		}
 	
 
 	private static void testFindByPk() {
 		long pk = 7l;
-<<<<<<< HEAD
-		try { // TODO Auto-generated method stub
-			RoleBean bean = model.findByPK(pk);
-			System.out.println(bean.getId());
-			System.out.println(bean.getName());
-		} catch (ApplicationException e) {
-			e.printStackTrace();
-		}
-=======
 	try {	// TODO Auto-generated method stub
 		RoleBean bean = model.findByPK(pk);
 		System.out.println(bean.getId());
 		System.out.println(bean.getName());
->>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 	}
 	catch (ApplicationException e) {
             e.printStackTrace();
@@ -199,18 +172,6 @@ public class RoleModelTest {
 		RoleBean bean = new RoleBean();
 		try {
 			bean = model.findByName("Faculty");
-<<<<<<< HEAD
-
-			if (bean == null) {
-				System.out.println("Test Find By PK fail");
-			}
-			System.out.println(bean.getId());
-			System.out.println(bean.getName());
-			System.out.println(bean.getDescription());
-		} catch (ApplicationException e) {
-			e.printStackTrace();
-		}
-=======
 			
 			  if (bean == null) {
 	                System.out.println("Test Find By PK fail");
@@ -221,7 +182,6 @@ public class RoleModelTest {
 	        } catch (ApplicationException e) {
 	            e.printStackTrace();
 	        }
->>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 	}
 
 	public static void testDelete() {
@@ -243,11 +203,7 @@ public class RoleModelTest {
 	public static void testAdd() throws ParseException {
 		// TODO Auto-generated method stub
 		try {
-<<<<<<< HEAD
-			SimpleDateFormat sdf = new SimpleDateFormat("2019-12-08");
-=======
 			SimpleDateFormat sdf=new SimpleDateFormat("2019-12-08");
->>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 			RoleBean bean = new RoleBean();
 			bean.setName("mahesh");
 			bean.setDescription("mahesh Role");
@@ -258,7 +214,6 @@ public class RoleModelTest {
 
 			long pk = model.add(bean);
 			// RoleBean addedbean = model.findByPK(pk);
-			System.out.println("pk= " + pk);
 			if (bean == null) {
 				System.out.println("Test add fail");
 			}

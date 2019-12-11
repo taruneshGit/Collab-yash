@@ -14,7 +14,10 @@ import org.apache.catalina.User;
 
 import in.co.sunrays.proj4.bean.UserBean;
 import in.co.sunrays.proj4.exception.ApplicationException;
+<<<<<<< HEAD
 import in.co.sunrays.proj4.exception.DuplicateRecordException;
+=======
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 import in.co.sunrays.proj4.model.UserModel;
 
 public class UserModelTest {
@@ -24,6 +27,7 @@ public class UserModelTest {
 			throws ParseException, DuplicateRecordException, ClassNotFoundException, SQLException {
 
 		// testAdd();
+<<<<<<< HEAD
 		// testDelete();
 		 testUpdate();
 		//testUpdate1();
@@ -97,6 +101,9 @@ bean.setLastName("bbbb");
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+=======
+		testDelete();
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 
 	}
 

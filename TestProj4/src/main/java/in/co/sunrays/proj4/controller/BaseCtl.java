@@ -3,6 +3,7 @@ package in.co.sunrays.proj4.controller;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,6 @@ import in.co.sunrays.proj4.util.DataValidator;
  * Base controller class of project. It contain (1) Generic operations (2)
  * Generic constants (3) Generic work flow
  **/
-
 public abstract class BaseCtl extends HttpServlet {
 	public static final String OP_SAVE = "save";
 	public static final String OP_CANCEL = "cancel";
@@ -73,6 +73,7 @@ public abstract class BaseCtl extends HttpServlet {
 		if (cdt > 0) {
 
 			dto.setCreatedDatetime(DataUtility.getTimestamp(cdt));
+<<<<<<< HEAD
 
 		} else {
 
@@ -81,8 +82,42 @@ public abstract class BaseCtl extends HttpServlet {
 		dto.setModifiedDatetime(DataUtility.getCurrentTimestamp());
 		return dto;
 
+=======
+	    }else{
+	    	dto.set
+	    }
+	/*
+	 * if (cdt > 0) { dto.setCreatedDatetime(DataUtility.getTimestamp(cdt)); } else
+	 * { dto.setCreatedDatetime(DataUtility.getCurrentTimestamp()); }
+	 * 
+	 * dto.setModifiedDatetime(DataUtility.getCurrentTimestamp());
+	 * 
+	 * return dto; }
+	 * 
+	 */ }
+
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public BaseCtl() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
+	}
+
+<<<<<<< HEAD
 	protected void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -100,6 +135,16 @@ public abstract class BaseCtl extends HttpServlet {
 			}
 		}
 		super.service(request, response);
+=======
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 	}
 
 	protected abstract String getView();

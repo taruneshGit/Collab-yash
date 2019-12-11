@@ -67,7 +67,11 @@ public class UserModel {
 	 * }
 	 * 
 	 */
+<<<<<<< HEAD
 	public long add(UserBean bean) throws ApplicationException, DuplicateRecordException {
+=======
+	public long add(UserBean bean) throws ApplicationException,DuplicateRecordException {
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 		// log.debug("Model add Started");
 		Connection conn = null;
 		int pk = 0;
@@ -75,8 +79,13 @@ public class UserModel {
 		UserBean existbean = findByLogin(bean.getLogin());
 
 		if (existbean != null) {
+<<<<<<< HEAD
 			throw new DuplicateRecordException("Login Id already exists");
 			// System.out.println("LOGIN ALREADY EXISTS");
+=======
+			 throw new DuplicateRecordException("Login Id already exists");
+			//System.out.println("LOGIN ALREADY EXISTS");
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 		}
 
 		try {
@@ -114,6 +123,7 @@ public class UserModel {
 			conn.commit(); // End transaction
 			pstmt.close();
 		} catch (Exception e) {
+<<<<<<< HEAD
 
 			try {
 				conn.rollback();
@@ -128,8 +138,30 @@ public class UserModel {
 
 		return pk;
 	}
+=======
+           
+            try {
+                conn.rollback();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new ApplicationException(
+                        "Exception : add rollback exception " + ex.getMessage());
+            }
+            throw new ApplicationException("Exception : Exception in add User");
+        } finally {
+            JDBCDataSource.closeConnection(conn);
+        }
+ 
+        return pk;
+    }
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 
+<<<<<<< HEAD
 	public Integer nextPk() throws DatabaseException {
+=======
+    
+	public Integer nextPk() throws DatabaseException{
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 		Connection conn = null;
 		int pk = 0;
 		try {
@@ -144,10 +176,17 @@ public class UserModel {
 			rs.close();
 			System.out.println("pk sql:-" + sql);
 			System.out.println("pk= " + pk);
+<<<<<<< HEAD
 		} catch (Exception e) {
 
 			throw new DatabaseException("Exception : Exception in getting PK");
 		} finally {
+=======
+		}catch (Exception e) {
+           
+            throw new DatabaseException("Exception : Exception in getting PK");
+        } finally {
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 			JDBCDataSource.closeConnection(conn);
 
 			System.out.println();
@@ -195,12 +234,22 @@ public class UserModel {
 			}
 			rs.close();
 
+<<<<<<< HEAD
 		} catch (Exception e) {
 			e.printStackTrace();
 
 			throw new ApplicationException("Exception : Exception in getting User by login");
 		} finally {
 			JDBCDataSource.closeConnection(conn);
+=======
+		}catch (Exception e) {
+            e.printStackTrace();
+           
+            throw new ApplicationException(
+                    "Exception : Exception in getting User by login");
+        } finally {
+            JDBCDataSource.closeConnection(conn);
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 
 		}
 		return bean;
@@ -215,9 +264,15 @@ public class UserModel {
 			conn = JDBCDataSource.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement(sql.toString());
 			pstmt.setLong(1, pk);
+<<<<<<< HEAD
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 
+=======
+			ResultSet rs=pstmt.executeQuery();
+			while(rs.next()) {
+			
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 				bean = new UserBean();
 				bean.setId(rs.getLong(1));
 				bean.setFirstName(rs.getString(2));
@@ -238,10 +293,16 @@ public class UserModel {
 				bean.setCreatedDatetime(rs.getTimestamp(17));
 				bean.setModifiedDatetime(rs.getTimestamp(18));
 			}
+<<<<<<< HEAD
 
+=======
+			
+		
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 			rs.close();
 
 		} catch (Exception e) {
+<<<<<<< HEAD
 			e.printStackTrace();
 			throw new ApplicationException("Exception : Exception in getting User by pk");
 		} finally {
@@ -249,6 +310,16 @@ public class UserModel {
 		}
 		return bean;
 
+=======
+            e.printStackTrace();
+            throw new ApplicationException(
+                    "Exception : Exception in getting User by pk");
+        } finally {
+            JDBCDataSource.closeConnection(conn);
+        }
+        return bean;
+    
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 	}
 
 	public void delete(UserBean bean) throws ApplicationException {
@@ -264,6 +335,7 @@ public class UserModel {
 			conn.commit();
 			psmt.close();
 
+<<<<<<< HEAD
 		} catch (Exception e) {
 
 			try {
@@ -358,4 +430,22 @@ public class UserModel {
 		}
 
 	}
+=======
+	    	}  catch (Exception e) {
+           
+              try {
+                conn.rollback();
+            } catch (Exception ex) {
+                throw new ApplicationException(
+                        "Exception : Delete rollback exception "
+                                + ex.getMessage());
+            }
+            throw new ApplicationException(
+                    "Exception : Exception in delete User");
+        } finally {
+            JDBCDataSource.closeConnection(conn);
+        }
+       
+}
+>>>>>>> branch 'master' of https://github.com/taruneshGit/Collab-yash.git
 }
