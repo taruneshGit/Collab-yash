@@ -1,14 +1,11 @@
 package in.co.sunrays.proj4.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.sun.javafx.tk.quantum.PathIteratorHelper.Struct;
-import com.sun.swing.internal.plaf.basic.resources.basic;
-import com.sun.xml.internal.ws.api.server.Module;
 
 import in.co.sunrays.proj4.bean.BaseBean;
 import in.co.sunrays.proj4.bean.UserBean;
@@ -39,7 +36,13 @@ public abstract class BaseCtl extends HttpServlet {
 	public static final String MSG_SUCCESS = "success";
 	public static final String MSG_ERROR = "error";
 
+	public BaseCtl() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	protected boolean validate(HttpServletRequest request) {
+		return true;
 	}
 
 	protected void preload(HttpServletRequest request) {
@@ -49,69 +52,56 @@ public abstract class BaseCtl extends HttpServlet {
 		return null;
 	}
 
-	protected BaseBean populateDTO(BaseBean dto,HttpServletRequest request) {
-		String createdBy=request.getParameter("createdBy");
-		String modifiedBy=null;
-		UserBean userBean =(UserBean)request.getSession().getAttribute("user");
-		if(userBean==null) {
-			createdBy="root";
-			modifiedBy="root";
-		}else {
-			modifiedBy=userBean.getLogin();
-			if("null".equalsIgnoreCase(createdBy)||DataValidator.isNull(createdBy)) {
-				createdBy=modifiedBy;	
+	protected BaseBean populateDTO(BaseBean dto, HttpServletRequest request) {
+		String createdBy = request.getParameter("createdBy");
+		String modifiedBy = null;
+		UserBean userBean = (UserBean) request.getSession().getAttribute("user");
+		if (userBean == null) {
+			createdBy = "root";
+			modifiedBy = "root";
+		} else {
+			modifiedBy = userBean.getLogin();
+			if ("null".equalsIgnoreCase(createdBy) || DataValidator.isNull(createdBy)) {
+				createdBy = modifiedBy;
 			}
 		}
 		dto.setCreatedBy(createdBy);
-        dto.setModifiedBy(modifiedBy);
-
-        long cdt = DataUtility.getLong(request.getParameter("createdDatetime"));
-
-		dto.setCreatedBy(createdBy);
 		dto.setModifiedBy(modifiedBy);
-		long cdt=DataUtility.getLong(request.getParameter("createdDateTime"));
-		if(cdt>0) 
+
+		long cdt = DataUtility.getLong(request.getParameter("createdDatetime"));
+
+		if (cdt > 0) {
+
 			dto.setCreatedDatetime(DataUtility.getTimestamp(cdt));
-	    }else{
-	    	dto.set
-	    }
-   /*if (cdt > 0) {
-            dto.setCreatedDatetime(DataUtility.getTimestamp(cdt));
-        } else {
-            dto.setCreatedDatetime(DataUtility.getCurrentTimestamp());
-        }
 
-        dto.setModifiedDatetime(DataUtility.getCurrentTimestamp());
+		} else {
 
-        return dto;
-    }
+			dto.setCreatedDatetime(DataUtility.getCurrentTimestamp());
+		}
+		dto.setModifiedDatetime(DataUtility.getCurrentTimestamp());
+		return dto;
 
-*/	}
-
-	private static final long serialVersionUID = 1L;
-
-	/**
-     * @see HttpServlet#HttpServlet()
-     */
-    public BaseCtl() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+	protected void service(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String op = DataUtility.getString(request.getParameter("operation"));
+		if (DataValidator.isNotNull(op) && !OP_CANCEL.equalsIgnoreCase(op) && !OP_VIEW.equalsIgnoreCase(op)
+				&& !OP_DELETE.equalsIgnoreCase(op)) {
+			// Check validation, If fail then send back to page with error
+			// messages
+
+			if (!validate(request)) {
+				BaseBean bean = (BaseBean) populateBean(request);
+				// ServletUtility.setBean(bean, request);
+				// ServletUtility.forward(getView(), request, response);
+				return;
+			}
+		}
+		super.service(request, response);
 	}
+
+	protected abstract String getView();
 
 }

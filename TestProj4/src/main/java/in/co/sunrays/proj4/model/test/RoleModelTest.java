@@ -6,36 +6,38 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.Delayed;
-
 import in.co.sunrays.proj4.bean.RoleBean;
+import in.co.sunrays.proj4.exception.ApplicationException;
+import in.co.sunrays.proj4.exception.DuplicateRecordException;
 import in.co.sunrays.proj4.model.RoleModel;
 
 public class RoleModelTest {
 
 	public static RoleModel model = new RoleModel();
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws ParseException {
 		// TODO Auto-generated method stub
 
 		// RoleModel model1=new RoleModel();
 
-		//testAdd();
-		//testDelete();
+		// testAdd();
+		// testDelete();
 		// test();
 		// model.findByName1("student");
 		// RoleBean addedbean = model.findByPK(1);
-		// testFindbyName();
-		 testUpdate();
-		// testFindByPk();
-		// testSearch();
+		testFindbyName();
+		// testUpdate();
+		testFindByPk();
+		testSearch();
 		// testList();
 
-		//testList1();
+		// testList1();
 
 	}
 
@@ -62,14 +64,14 @@ public class RoleModelTest {
 				System.out.println("\t" + bean.getModifiedDatetime());
 
 			}
-		} catch (Exception e) {
+		} catch (ApplicationException e) {
 			e.printStackTrace();
 
 		}
 
 	}
 
-	public static void testList() {
+	public static void testList() throws ApplicationException {
 		try {
 			RoleBean bean = new RoleBean();
 			List list = new ArrayList();
@@ -92,9 +94,9 @@ public class RoleModelTest {
 				System.out.println("\t" + bean.getModifiedDatetime());
 
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ApplicationException e) {
 
+			throw new ApplicationException("Exception : Exception in search Role");
 		}
 
 	}
@@ -123,17 +125,21 @@ public class RoleModelTest {
 				System.out.print("\t" + bean.getCreatedDatetime());
 				System.out.println("\t" + bean.getModifiedDatetime());
 			}
-		} catch (Exception e) {
+
+		} catch (ApplicationException e) {
 			e.printStackTrace();
 		}
 	}
 
 	private static void testFindByPk() {
 		long pk = 7l;
-		// TODO Auto-generated method stub
-		RoleBean bean = model.findByPK(pk);
-		System.out.println(bean.getId());
-		System.out.println(bean.getName());
+		try { // TODO Auto-generated method stub
+			RoleBean bean = model.findByPK(pk);
+			System.out.println(bean.getId());
+			System.out.println(bean.getName());
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void testUpdate() {
@@ -147,9 +153,9 @@ public class RoleModelTest {
 			if (!"ramesh".equals(updatedbean.getName())) {
 				System.out.println("Test Update fail");
 			}
-		} catch (
-
-		Exception e) {
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+		} catch (DuplicateRecordException e) {
 			e.printStackTrace();
 		}
 
@@ -163,19 +169,14 @@ public class RoleModelTest {
 			bean = model.findByName("Faculty");
 
 			if (bean == null) {
-
-				System.out.println("Test Find By Name fail");
-
+				System.out.println("Test Find By PK fail");
 			}
-			System.out.println("-------------");
 			System.out.println(bean.getId());
 			System.out.println(bean.getName());
 			System.out.println(bean.getDescription());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		} catch (ApplicationException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public static void testDelete() {
@@ -189,14 +190,15 @@ public class RoleModelTest {
 			if (deletedBean != null) {
 				System.out.println("Test Delete fail");
 			}
-		} catch (Exception e) {
+		} catch (ApplicationException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void testAdd() {
+	public static void testAdd() throws ParseException {
 		// TODO Auto-generated method stub
 		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("2019-12-08");
 			RoleBean bean = new RoleBean();
 			bean.setName("mahesh");
 			bean.setDescription("mahesh Role");
@@ -207,10 +209,14 @@ public class RoleModelTest {
 
 			long pk = model.add(bean);
 			// RoleBean addedbean = model.findByPK(pk);
+			System.out.println("pk= " + pk);
 			if (bean == null) {
 				System.out.println("Test add fail");
 			}
-		} catch (Exception e) {
+		} catch (ApplicationException e) {
+			e.printStackTrace();
+		} catch (DuplicateRecordException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
